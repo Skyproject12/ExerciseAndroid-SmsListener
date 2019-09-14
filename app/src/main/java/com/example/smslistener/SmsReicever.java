@@ -23,9 +23,10 @@ public class SmsReicever extends BroadcastReceiver {
                         SmsMessage currentMessage= getInComingMessage(objectj, bundle);
                         // get no telp when the user can telp
                         String senderNum= currentMessage.getDisplayOriginatingAddress();
-                        // getb message from sms user
+                        // get message from sms user
                         String message= currentMessage.getDisplayMessageBody();
                         Log.d(TAG,"senderNum:"+senderNum+"; message"+message);
+                        // mengirim data ke dalam sms receiver agar sms yang masuk dapat diketahui messagenya
                         Intent showSmsIntent= new Intent(context, SmsReceiverActivity.class);
                         showSmsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         showSmsIntent.putExtra(SmsReceiverActivity.EXTRA_SMS_NO, senderNum);
@@ -33,14 +34,19 @@ public class SmsReicever extends BroadcastReceiver {
                         context.startActivity(showSmsIntent);
                     }
                 }
+                else {
+                    Log.d(TAG, "onReceiver: SMS is null");
+                }
             }
+        }catch (Exception e) {
+            Log.d(TAG, "Exception smsReceiver"+e);
         }
-        throw new UnsupportedOperationException("Not yet implemented");
     }
     // call class smsmessage
     private SmsMessage getInComingMessage(Object object, Bundle bundle){
         // initial smsmessage
         SmsMessage currentSMS;
+        // class for get the message from sms
         if(Build.VERSION.SDK_INT >=23 ){
             String format= bundle.getString("format");
             currentSMS= SmsMessage.createFromPdu((byte[])object, format);
@@ -52,6 +58,8 @@ public class SmsReicever extends BroadcastReceiver {
         return currentSMS;
     }
 
+    // ketika menggunakan fitur smsmessage maka kita dapat memanggil method smsCurrentMessage yang digunakan untuk mengambil sms yang masuk
     public SmsReicever() {
+
     }
 }

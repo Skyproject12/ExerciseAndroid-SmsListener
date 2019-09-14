@@ -18,10 +18,15 @@ public class SmsReceiverActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms_receiver);
+        final Bundle bundle= getIntent().getExtras();
+        String no = bundle.get(EXTRA_SMS_NO).toString();
+        String message = bundle.get(EXTRA_SMS_MESSAGE).toString();
         setTitle("Incoming Message");
         textSmsMessage= findViewById(R.id.text_message);
         textSmsFrom= findViewById(R.id.text_no);
         buttonClose= findViewById(R.id.button_close);
+        textSmsFrom.setText(no);
+        textSmsMessage.setText(message);
     }
 
     @Override
